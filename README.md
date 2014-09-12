@@ -4,7 +4,7 @@ services-checker
 Bash Script to check if services are running and restart if not. Sends email to you.
 
 
-#INSTALL:
+##INSTALL:
 
 1. put into your scripts folder
 2. set your email address
@@ -25,8 +25,8 @@ The script will look at the exit code after checking the status of each service.
 If the service does not start for some reason, it sends you an email telling you it was not started.
 
 
-#################################################
-#WISH LIST:
+
+##WISH LIST:
 
 - rather than sending new emails for a service that won't restart, it would be cool if it could try maybe 3 times and then give up. Not sure how to do that yet.
 
