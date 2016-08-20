@@ -1,53 +1,57 @@
 #!/bin/bash
-#ver. 2
-
+#ver. 3
 ##this script will check mysql and apache
 ##if that service is not running
 ##it will start the service and send 
 ##an email to you
 
+##set the path ##this works for Ubuntu 14.04 and 16.04
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
 ##set your email address 
-EMAIL="mail@yourdomain.com"
+EMAIL="youremail@domain.com"
 
 ##list your services you want to check
-SERVICES=(  'mysql' 'apache2' )
+SERVICES=(  'mysql' 'apache2'  )
 
-#### DO NOT CHANGE anything BELOW ####
+#### OK. STOP EDITING ####
+
+
 
 
  for i in "${SERVICES[@]}"
   do
-    ###IF SERVICE IS NOT RUNNING####
+###CHECK SERVICE####
+`pgrep $i >/dev/null 2>&1`
+STATS=$(echo $?)
 
-    service $i status;
-    STATS=$(echo $?)
-    if [[  $STATS == 3  ]]
+###IF SERVICE IS NOT RUNNING####
+if [[  $STATS == 1  ]]
 
-	then
-       ##TRY TO RESTART THAT SERVICE###
-	service $i start
-     
-        ##IF RESTART WORKED###
-        service $i status;
-        RESTART=$(echo $?)
-       if [[  $RESTART == 0  ]]
+then
 
-	then
-        ##SEND AN EMAIL###
-	MESSAGE="$(tail -5 /var/log/$i/error.log)"
-	SUBJECT="$i down -but restarted-  on $(hostname) $(date) "
-	echo "   $i  $MESSAGE "  | mail -s "$SUBJECT" "$EMAIL"
-       else
+##TRY TO RESTART THAT SERVICE###
+service $i start
 
-        ##IF RESTART DID NOT WORK SEND A DIFFERENT EMAIL###
-	MESSAGE="$(tail -5 /var/log/$i/error.log)"
-	SUBJECT="$i down on $(hostname) $(date) "
-	echo "   $i  $MESSAGE  . I tried to restart but it did not work"  | mail -s "$SUBJECT" "$EMAIL"
+##CHECK IF RESTART WORKED###
+`pgrep $i >/dev/null 2>&1`
+RESTART=$(echo $?)
 
-       fi
-    fi
-  
+if [[  $RESTART == 0  ]]
+##IF SERVICE HAS BEEN RESTARTED###
+then
+##SEND AN EMAIL###
+MESSAGE="$i   is down, but looks like I was able to restart it on   on $(hostname) $(date)  "
+SUBJECT="$i  down -but restarted-  on $(hostname) $(date) "
+echo   $MESSAGE | mail -s "$SUBJECT" "$EMAIL"
+
+else
+##IF RESTART DID NOT WORK SEND A DIFFERENT EMAIL###
+MESSAGE="$i is down   on $(hostname)  at $(date)  "
+SUBJECT=" $i  down on $(hostname) $(date) "
+echo $MESSAGE  " I tried to restart it, but it did not work"  | mail -s "$SUBJECT" "$EMAIL"
+
+fi
+fi
+
   done
-
- 
-
