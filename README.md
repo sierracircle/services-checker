@@ -20,18 +20,8 @@ Tested with Ubuntu 14.04 and 16.04
 
 ```
 
-The script will look at the exit code after checking the status of each service. If the service is stopped (exit code 3), it tries to restart the service. If the service status then gives an exit code of 0, it sends you an email saying the service stopped, but was restarted.
+The script will check the status of each service. If the service is stopped, it tries to restart the service. If the service starts, it sends you an email saying the service stopped but was restarted.
 
 If the service does not start for some reason, it sends you an email telling you it was not started.
 
-
-
-##WISH LIST:
-
-- rather than sending new emails for a service that won't restart, it would be cool if it could try maybe 3 times and then give up. Not sure how to do that yet.
-
-
-
-
-
-
+After that, it will continue to try and start, but not send any more emails until the service is finally started.
