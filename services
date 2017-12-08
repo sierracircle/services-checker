@@ -45,7 +45,7 @@ SERVICES=( 'apache2' 'mysql' )
     fi
 
     ##SEND AN EMAIL###
-    MESSAGE="$i was down, but I was able to restart it on on $(hostname) $(date)  "
+    MESSAGE="$i was down, but I was able to restart it on $(hostname) $(date)  "
     SUBJECT="$i was down -but restarted-  on $(hostname) $(date) "
     echo $MESSAGE | mail -s "$SUBJECT" "$EMAIL"
 
