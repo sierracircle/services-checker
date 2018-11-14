@@ -1,10 +1,9 @@
-services-checker
-================
+## Services Checker
 
 Bash Script to check if services are running and restart if not. Sends email to you.
 Tested with Ubuntu 14.04, 16.04 and 18.04.
 
-##INSTALL:
+## Installation
 
 1. put into your scripts folder
 2. set your email address
