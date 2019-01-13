@@ -5,7 +5,7 @@ Tested with Ubuntu 14.04, 16.04 and 18.04.
 
 ## Installation
 
-1. put into your scripts folder
+1. put it into your scripts folder
 2. set your email address
 3. set the services you want to keep an eye on (by default it has mysql and apache2..you can add or take away whatever you need)
 3. save your changes
@@ -15,7 +15,7 @@ Tested with Ubuntu 14.04, 16.04 and 18.04.
 
 ```
 #check on services
-*/1 *  * * * /your/path/to/scripts/services
+*/1 *  * * * /your/path/to/scripts/restart-services
 
 ```
 
