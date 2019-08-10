@@ -5,17 +5,17 @@ Tested with Ubuntu 14.04, 16.04 and 18.04.
 
 ## Installation
 
-1. put it into your scripts folder
-2. set your email address
-3. set the services you want to keep an eye on (by default it has `mysql` and `apache2`... you can modify them as you need)
-4. save your changes
+1. Put it into your scripts folder
+2. Set your email address
+3. Set the services you want to keep an eye on (by default it has `mysql` and `apache2`... you can modify them as you need)
+4. Save your changes
 5. Ensure it has enough privilege to run:
 
 ```
 chmod +x /your/path/to/scripts/restart-services
 ```
 
-6. create a cronjob as root (sudo crontab -e)  and add something like this, which runs every minute (adjust to your needs):
+6. Create a cronjob as root (sudo crontab -e)  and add something like this, which runs every minute (adjust to your needs):
 
 
 
