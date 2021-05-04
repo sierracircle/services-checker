@@ -1,20 +1,34 @@
 #!/bin/bash
-#ver. 4
+#ver. 5
 ##this script will check mysql and apache
 ##if that service is not running
-##it will start the service and send an email to you
-##if the restart does not work, it sends an email and then exits
+##it will start the service and send an email to you and/or write to a log file
+##if the restart does not work, it sends an email (and/or writes to the log file) and then exits
 
 ##set the path ##this works for Ubuntu 14.04 and 16.04
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-##set your email address 
-EMAIL="email@yourdomain.com"
+##uncomment and set your email address if you want an email notification
+#EMAIL="email@yourdomain.com"
+
+##uncomment if you want a log file
+#LOG="yes"
 
 ##list your services you want to check
 SERVICES=( 'apache2' 'mysql' )
 
 #### OK. STOP EDITING ####
+
+ ##CHECK IF YOU WANT A LOG FILE##
+  if [ "$LOG" = "yes" ]; then
+        SCRIPT_PATH=$(dirname "$0")
+        LOG_FILE=$SCRIPT_PATH/services_log
+        ##CHECK IF THERE IS NOT A LOG FILE###
+        if [ ! -f "/tmp/$i" ]; then
+        ##CREATE A LOG FILE###
+        touch $LOG_FILE
+        fi
+  fi
 
 
  for i in "${SERVICES[@]}"
@@ -44,10 +58,18 @@ SERVICES=( 'apache2' 'mysql' )
      rm /tmp/$i
     fi
 
-    ##SEND AN EMAIL###
-    MESSAGE="$i was down, but I was able to restart it on $(hostname) $(date)  "
-    SUBJECT="$i was down -but restarted-  on $(hostname) $(date) "
-    echo $MESSAGE | mail -s "$SUBJECT" "$EMAIL"
+    if [ -n "$EMAIL" ]; then
+     ##SEND AN EMAIL###
+     MESSAGE="$i was down, but I was able to restart it on $(hostname) $(date)  "
+     SUBJECT="$i was down -but restarted-  on $(hostname) $(date) "
+     echo $MESSAGE | mail -s "$SUBJECT" "$EMAIL"
+    fi
+
+    ##WRITE TO LOG FILE###
+    if [ "$LOG" = "yes" ]; then
+     LOGMESSAGE="$i restarted on $(hostname) $(date)  "
+     echo $LOGMESSAGE  >> $LOG_FILE
+    fi
 
    else
     ##IF RESTART DID NOT WORK###
@@ -58,15 +80,22 @@ SERVICES=( 'apache2' 'mysql' )
      ##CREATE A TMP FILE###
      touch /tmp/$i
 
-     ##SEND A DIFFERENT EMAIL###
-     MESSAGE="$i is down on $(hostname)  at $(date)  "
-     SUBJECT=" $i  down on $(hostname) $(date) "
-     echo $MESSAGE  " I tried to restart it, but it did not work"  | mail -s "$SUBJECT" "$EMAIL"
+     if [ -n "$EMAIL" ]; then
+      ##SEND A DIFFERENT EMAIL###
+      MESSAGE="$i is down on $(hostname)  at $(date)  "
+      SUBJECT=" $i  down on $(hostname) $(date) "
+      echo $MESSAGE  " I tried to restart it, but it did not work"  | mail -s "$SUBJECT" "$EMAIL"
+     fi
+
+     if [ "$LOG" = "yes" ]; then
+       ##WRITE TO LOG FILE###
+       LOGMESSAGE="$i down and unable to restart on $(hostname) $(date)  "
+       echo $LOGMESSAGE  >> ./services_log
+     fi
+
     fi
   fi
  fi
-
-
 
   done
 exit 0;
