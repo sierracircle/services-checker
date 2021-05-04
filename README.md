@@ -6,10 +6,11 @@ Tested with Ubuntu 14.04, 16.04 and 18.04.
 ## Installation
 
 1. Put it into your scripts folder
-2. Set your email address
-3. Set the services you want to keep an eye on (by default it has `mysql` and `apache2`... you can modify them as you need)
-4. Save your changes
-5. Ensure it has enough privilege to run:
+2. Uncomment the email and set your email address if you want an email notification
+3. Uncomment the log option if you want a log-file (it creates it automatically in the same directory as the script)
+4. Set the services you want to keep an eye on (by default it has `mysql` and `apache2`... you can modify them as you need)
+5. Save your changes
+6. Ensure it has enough privilege to run:
 
 ```
 chmod +x /your/path/to/scripts/restart-services
