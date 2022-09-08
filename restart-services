@@ -34,21 +34,21 @@ SERVICES=( 'apache2' 'mysql' )
  for i in "${SERVICES[@]}"
   do
  ###CHECK SERVICE####
- `pgrep $i >/dev/null 2>&1`
- STATS=$(echo $?)
+ `pidof $i >/dev/null 2>&1`
+ STATUS=$(echo $?)
 
  ###IF SERVICE IS NOT RUNNING####
- if [[  $STATS == 1  ]]
+ if [[  $STATUS == 1  ]]
 
   then
   ##TRY TO RESTART THAT SERVICE###
   service $i start
 
   ##CHECK IF RESTART WORKED###
-  `pgrep $i >/dev/null 2>&1`
-  RESTART=$(echo $?)
+  `pidof $i >/dev/null 2>&1`
+  STATUS=$(echo $?)
 
-  if [[  $RESTART == 0  ]]
+  if [[  $STATUS == 0  ]]
    ##IF SERVICE HAS BEEN RESTARTED###
    then
 
@@ -82,7 +82,7 @@ SERVICES=( 'apache2' 'mysql' )
 
      if [ -n "$EMAIL" ]; then
       ##SEND A DIFFERENT EMAIL###
-      MESSAGE="$i is down on $(hostname)  at $(date)  "
+      MESSAGE="$i is down on $(hostname) at $(date)  "
       SUBJECT=" $i  down on $(hostname) $(date) "
       echo $MESSAGE  " I tried to restart it, but it did not work"  | mail -s "$SUBJECT" "$EMAIL"
      fi
@@ -90,7 +90,7 @@ SERVICES=( 'apache2' 'mysql' )
      if [ "$LOG" = "yes" ]; then
        ##WRITE TO LOG FILE###
        LOGMESSAGE="$i down and unable to restart on $(hostname) $(date)  "
-       echo $LOGMESSAGE  >> ./services_log
+       echo $LOGMESSAGE  >> $LOG_FILE
      fi
 
     fi
