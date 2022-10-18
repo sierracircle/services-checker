@@ -15,7 +15,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 #LOG="yes"
 
 ##list your services you want to check
-SERVICES=( 'apache2' 'mysql' )
+SERVICES=( 'apache2' 'mariadb' )
 
 #### OK. STOP EDITING ####
 
