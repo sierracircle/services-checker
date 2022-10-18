@@ -34,7 +34,7 @@ SERVICES=( 'apache2' 'mariadb' )
  for i in "${SERVICES[@]}"
   do
  ###CHECK SERVICE####
- `pidof $i >/dev/null 2>&1`
+ `pgrep $i >/dev/null 2>&1`
  STATUS=$(echo $?)
 
  ###IF SERVICE IS NOT RUNNING####
@@ -45,7 +45,7 @@ SERVICES=( 'apache2' 'mariadb' )
   service $i start
 
   ##CHECK IF RESTART WORKED###
-  `pidof $i >/dev/null 2>&1`
+  `pgrep $i >/dev/null 2>&1`
   STATUS=$(echo $?)
 
   if [[  $STATUS == 0  ]]
